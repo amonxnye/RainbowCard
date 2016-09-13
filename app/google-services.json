@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "984347885326",
+    "firebase_url": "https://rainbow-512e0.firebaseio.com",
+    "project_id": "rainbow-512e0",
+    "storage_bucket": "rainbow-512e0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:984347885326:android:509abe8493fdcc0b",
+        "android_client_info": {
+          "package_name": "com.example.amon.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "984347885326-de3qltb9ocpu56nrk51kivo9v2saf446.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuLWYi-plvGR53V814ABRhQuNHqP8EZGM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:984347885326:android:e62fd926409855b6",
+        "android_client_info": {
+          "package_name": "com.rainbow.card.rainbowcard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "984347885326-de3qltb9ocpu56nrk51kivo9v2saf446.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuLWYi-plvGR53V814ABRhQuNHqP8EZGM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
