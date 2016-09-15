@@ -17,15 +17,30 @@ package com.rainbow.card.rainbowcard;
 
 
 
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 
 public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
-
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
     private static final String TAG = "MyFirebaseIIDService";
 
     /**
@@ -34,16 +49,19 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
      * is initially generated so this is where you would retrieve the token.
      */
     // [START refresh_token]
+    String refreshedToken;
     @Override
     public void onTokenRefresh() {
         // Get updated InstanceID token.
-        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "Refreshed token: " + refreshedToken);
 
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
         sendRegistrationToServer(refreshedToken);
+       // new SendDeviceToken(refreshedToken);
+
     }
     // [END refresh_token]
 
@@ -57,8 +75,82 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
      */
     private void sendRegistrationToServer(String token) {
         // TODO: Implement this method to send token to your app server.
+        String response = null;
+        //Log.d(TAG, params[0]);
+        //Log.d(TAG, params[1]);
 
-        //Toast.makeText(this,token,Toast.LENGTH_LONG).show();
+        try {
+            // Construct the URL for the OpenWeatherMap query
+            // Possible parameters are avaiable at OWM's forecast API page, at
+            URL url = new URL("http://ec2-54-191-230-33.us-west-2.compute.amazonaws.com/rainbow/view/devicetokenpig.php");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(10000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("POST");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+
+            //   Intent intent = getIntent();
+
+            // String email = intent.getStringExtra("email");
+
+            Uri.Builder builder = new Uri.Builder()
+                    .appendQueryParameter("device",token);
+            //.appendQueryParameter("card_buyer", "2016");
+            String query = builder.build().getEncodedQuery();
+
+            OutputStream os = conn.getOutputStream();
+            // InputStream is = conn.getInputStream();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+            writer.write(query);
+            writer.flush();
+            writer.close();
+            os.close();
+
+            conn.connect();
+
+            // Toast.makeText(PayActivity.this,"Payment Done...", Toast.LENGTH_SHORT).show();
+
+/*
+                // Read the input stream into a String
+                InputStream inputStream = conn.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                if (inputStream == null) {
+                    // Nothing to do.
+                    return null;
+                }
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                    // But it does make debugging a *lot* easier if you print out the completed
+                    // buffer for debugging.
+                    buffer.append(line + "\n");
+                }
+
+                if (buffer.length() == 0) {
+                    // Stream was empty.  No point in parsing.
+                    return null;
+                }
+                response = buffer.toString();
+                Log.d(TAG, response);
+                // return response;
+
+                // Toast.makeText(PayActivity.this,response, Toast.LENGTH_SHORT).show();
+*/
+        } catch (Exception e) {
+            //  Log.e( e.toString());
+            //  Toast.makeText(MyFirebaseInstanceIDService.this,"No data Currently", Toast.LENGTH_SHORT).show();
+            // If the code didn't successfully get the weather data, there's no point in attemping
+            // to parse it.
+           // return  null;
+        }
 
     }
-}
+
+
+
+
+    }
