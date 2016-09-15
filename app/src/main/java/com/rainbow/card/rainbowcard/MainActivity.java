@@ -1,6 +1,7 @@
 package com.rainbow.card.rainbowcard;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -43,6 +44,11 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Uri data = getIntent().getData();
+        if (data==null) { } else {
+           String datos=data.toString();
+            Toast.makeText(MainActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
+        }
        // onTokenRefresh();
 
         signin = (Button) findViewById(R.id.button);

@@ -73,6 +73,12 @@ public class PayActivity extends AppCompatActivity implements NavigationView.OnN
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
 
+        Uri data = getIntent().getData();
+        if (data==null) { } else {
+            // //String datos=data.toString();
+            Toast.makeText(PayActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
+        }
+
         pay = (Button)findViewById(R.id.pay);
         balance = (TextView) findViewById(R.id.balance);
        // card = (EditText)findViewById(R.id.card);
