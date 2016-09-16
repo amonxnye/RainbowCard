@@ -1,6 +1,9 @@
 package com.rainbow.card.rainbowcard;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -64,7 +67,7 @@ public class PayActivity extends AppCompatActivity implements NavigationView.OnN
     public  EditText amount,card;
     public InputStream is;
     public TextView balance;
-    public String amountx,cardx,emailforbalance;
+    public String amountx,cardx,emailforbalance,token;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,7 +82,15 @@ public class PayActivity extends AppCompatActivity implements NavigationView.OnN
             Toast.makeText(PayActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
         }
 
+        IntentFilter filter = new IntentFilter("Action");
 
+        BroadcastReceiver receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                 token =  intent.getExtras().getString("token");
+            }
+        };
+        registerReceiver(receiver, filter);
 
         pay = (Button)findViewById(R.id.pay);
         balance = (TextView) findViewById(R.id.balance);
@@ -132,16 +143,19 @@ pay.setOnClickListener(new View.OnClickListener() {
 
         new ResponsePaymentData().execute(amountx,cardx);
         new ResponseBalanceData().execute(emailforbalance);
+Log.d("TokenData",token);
 
-        Intent intent=new Intent(PayActivity.this,MyFirebaseInstanceIDService.class);
-        Bundle b=new Bundle();
-        b.putString("email_buyer", emailforbalance);
-        b.putString("card_seller", cardx);
 
-        intent.putExtras(b);
-        startService(intent);
+        // Intent intent=new Intent(PayActivity.this,MyFirebaseInstanceIDService.class);
+      //  Bundle b=new Bundle();
+      //  intent.putExtra("email_buyer", emailforbalance);
+     //   intent.putExtra("card_seller", cardx);
+        //intent.putExtra("link", MainActivity.this.link);
+       // intent.putExtras(b);
+      //  startService(intent);
     }
 });
+
 
 
     }
@@ -403,5 +417,4 @@ pay.setOnClickListener(new View.OnClickListener() {
     }
 
 
-
-}
+ }

@@ -17,6 +17,7 @@ package com.rainbow.card.rainbowcard;
 
 
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -45,11 +46,13 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private static final String TAG = "MyFirebaseIIDService";
 
+
     /**
      * Called if InstanceID token is updated. This may occur if the security of
      * the previous token had been compromised. Note that this is called when the InstanceID token
      * is initially generated so this is where you would retrieve the token.
      */
+
     // [START refresh_token]
     String refreshedToken;
     @Override
@@ -61,17 +64,20 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
+        Intent intent = new Intent();
+       intent.setAction("Action");
+
+        intent.putExtra("token", refreshedToken);
+
+        sendBroadcast(intent);
+
         sendRegistrationToServer(refreshedToken);
        // new SendDeviceToken(refreshedToken);
 
     }
     // [END refresh_token]
 
-    public void onStart(Intent intent, int startid){
-        super.onStart(intent, startid);
-        Bundle b=intent.getExtras();
-        String[] Array = b.getStringArray("Array");
-    }
+
     /**
      * Persist token to third-party servers.
      *
@@ -85,10 +91,6 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         String response = null;
         //Log.d(TAG, params[0]);
         //Log.d(TAG, params[1]);
-        Intent intent = new Intent();
-        Bundle b =intent.getExtras();
-        String email = b.getString("email_buyer");
-        String card_buyer = b.getString("card_seller");
 
 
         try {
@@ -108,8 +110,8 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
 
             Uri.Builder builder = new Uri.Builder()
                     .appendQueryParameter("device",token)
-                    .appendQueryParameter("email_buyer",email)
-                    .appendQueryParameter("card_seller",card_buyer);
+                    .appendQueryParameter("email_buyer","notset")
+                    .appendQueryParameter("card_seller","notset");
             //.appendQueryParameter("card_buyer", "2016");
             String query = builder.build().getEncodedQuery();
 
