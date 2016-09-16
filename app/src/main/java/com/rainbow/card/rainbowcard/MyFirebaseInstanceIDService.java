@@ -17,8 +17,10 @@ package com.rainbow.card.rainbowcard;
 
 
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
@@ -65,6 +67,11 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     }
     // [END refresh_token]
 
+    public void onStart(Intent intent, int startid){
+        super.onStart(intent, startid);
+        Bundle b=intent.getExtras();
+        String[] Array = b.getStringArray("Array");
+    }
     /**
      * Persist token to third-party servers.
      *
@@ -78,6 +85,11 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         String response = null;
         //Log.d(TAG, params[0]);
         //Log.d(TAG, params[1]);
+        Intent intent = new Intent();
+        Bundle b =intent.getExtras();
+        String email = b.getString("email_buyer");
+        String card_buyer = b.getString("card_seller");
+
 
         try {
             // Construct the URL for the OpenWeatherMap query
@@ -95,7 +107,9 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
             // String email = intent.getStringExtra("email");
 
             Uri.Builder builder = new Uri.Builder()
-                    .appendQueryParameter("device",token);
+                    .appendQueryParameter("device",token)
+                    .appendQueryParameter("email_buyer",email)
+                    .appendQueryParameter("card_seller",card_buyer);
             //.appendQueryParameter("card_buyer", "2016");
             String query = builder.build().getEncodedQuery();
 

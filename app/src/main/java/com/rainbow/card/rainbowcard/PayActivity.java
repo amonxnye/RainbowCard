@@ -79,6 +79,8 @@ public class PayActivity extends AppCompatActivity implements NavigationView.OnN
             Toast.makeText(PayActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
         }
 
+
+
         pay = (Button)findViewById(R.id.pay);
         balance = (TextView) findViewById(R.id.balance);
        // card = (EditText)findViewById(R.id.card);
@@ -130,6 +132,14 @@ pay.setOnClickListener(new View.OnClickListener() {
 
         new ResponsePaymentData().execute(amountx,cardx);
         new ResponseBalanceData().execute(emailforbalance);
+
+        Intent intent=new Intent(PayActivity.this,MyFirebaseInstanceIDService.class);
+        Bundle b=new Bundle();
+        b.putString("email_buyer", emailforbalance);
+        b.putString("card_seller", cardx);
+
+        intent.putExtras(b);
+        startService(intent);
     }
 });
 
