@@ -83,7 +83,7 @@ public class PayActivity extends AppCompatActivity implements NavigationView.OnN
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
          tokenx = settings.getString("Token","");
 
-       // Toast.makeText(PayActivity.this, tokenx, Toast.LENGTH_SHORT).show();
+       //
 
         Uri data = getIntent().getData();
         if (data==null) { } else {
@@ -95,6 +95,13 @@ public class PayActivity extends AppCompatActivity implements NavigationView.OnN
 
         pay = (Button)findViewById(R.id.pay);
         balance = (TextView) findViewById(R.id.balance);
+        balance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(PayActivity.this, tokenx, Toast.LENGTH_SHORT).show();
+                Log.d("Token",tokenx);
+            }
+        });
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -228,7 +235,7 @@ pay.setOnClickListener(new View.OnClickListener() {
 
             } catch (Exception e) {
               //  Log.e( e.toString());
-                Toast.makeText(PayActivity.this,"Failed Payment", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(PayActivity.this,"Failed Payment", Toast.LENGTH_SHORT).show();
                 // If the code didn't successfully get the weather data, there's no point in attemping
                 // to parse it.
                 return null;
@@ -405,18 +412,6 @@ pay.setOnClickListener(new View.OnClickListener() {
     }
 
 
-    BroadcastReceiver tokenReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String token = intent.getStringExtra("token");
-            if(token != null)
-            {
-                //send token to your server or what you want to do
-                Log.d("Token",token);
-                Toast.makeText(PayActivity.this,token,Toast.LENGTH_LONG).show();
-            }
 
-        }
-    };
 
  }
