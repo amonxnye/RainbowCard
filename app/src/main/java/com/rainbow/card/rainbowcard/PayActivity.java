@@ -70,7 +70,7 @@ public class PayActivity extends AppCompatActivity implements NavigationView.OnN
     public  EditText amount,card;
     public InputStream is;
     public TextView balance;
-    public String amountx,cardx,emailforbalance,token;
+    public String amountx,cardx,emailforbalance,token,tokenx;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,9 +81,9 @@ public class PayActivity extends AppCompatActivity implements NavigationView.OnN
 
 
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        String tokenx = settings.getString("Token","");
+         tokenx = settings.getString("Token","");
 
-        Toast.makeText(PayActivity.this, tokenx, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(PayActivity.this, tokenx, Toast.LENGTH_SHORT).show();
 
         Uri data = getIntent().getData();
         if (data==null) { } else {
@@ -180,6 +180,7 @@ pay.setOnClickListener(new View.OnClickListener() {
                 Uri.Builder builder = new Uri.Builder()
                         .appendQueryParameter("amount",params[0])
                         .appendQueryParameter("card",params[1])
+                        .appendQueryParameter("token",tokenx)
                         .appendQueryParameter("email",email);
                         //.appendQueryParameter("card_buyer", "2016");
                 String query = builder.build().getEncodedQuery();
