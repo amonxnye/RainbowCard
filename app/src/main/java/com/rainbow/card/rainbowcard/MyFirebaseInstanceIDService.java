@@ -17,11 +17,15 @@ package com.rainbow.card.rainbowcard;
 
 
 
+import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -92,6 +96,10 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         //Log.d(TAG, params[0]);
         //Log.d(TAG, params[1]);
 
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("Token", token);
+        editor.apply();
 
         try {
             // Construct the URL for the OpenWeatherMap query

@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
 
@@ -77,22 +79,23 @@ public class PayActivity extends AppCompatActivity implements NavigationView.OnN
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
 
+
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String tokenx = settings.getString("Token","");
+
+        Toast.makeText(PayActivity.this, tokenx, Toast.LENGTH_SHORT).show();
+
         Uri data = getIntent().getData();
         if (data==null) { } else {
             // //String datos=data.toString();
             Toast.makeText(PayActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
         }
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(tokenReceiver, new IntentFilter("tokenReceiver"));
+       // LocalBroadcastManager.getInstance(this).registerReceiver(tokenReceiver, new IntentFilter("tokenReceiver"));
 
         pay = (Button)findViewById(R.id.pay);
         balance = (TextView) findViewById(R.id.balance);
-       // card = (EditText)findViewById(R.id.card);
-      //  message = (Button)findViewById(R.id.fab) ;
-       // about = (Button)findViewById(R.id.fab2);
-      //  amountx = amount.getText().toString();
-       // cardx = card.getText().toString();
-        //firbase authentication
+
         mAuth = FirebaseAuth.getInstance();
 
 
@@ -137,15 +140,6 @@ pay.setOnClickListener(new View.OnClickListener() {
         new ResponsePaymentData().execute(amountx,cardx);
         new ResponseBalanceData().execute(emailforbalance);
 
-
-
-        // Intent intent=new Intent(PayActivity.this,MyFirebaseInstanceIDService.class);
-      //  Bundle b=new Bundle();
-      //  intent.putExtra("email_buyer", emailforbalance);
-     //   intent.putExtra("card_seller", cardx);
-        //intent.putExtra("link", MainActivity.this.link);
-       // intent.putExtras(b);
-      //  startService(intent);
     }
 });
 

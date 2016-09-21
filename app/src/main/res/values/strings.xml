@@ -3,6 +3,6 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
+   <string name="firebase_cloud_messaging_token"></string>
     <string name="action_settings">Settings</string>
 </resources>
