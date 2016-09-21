@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
 
 import android.content.Intent;
@@ -82,15 +83,7 @@ public class PayActivity extends AppCompatActivity implements NavigationView.OnN
             Toast.makeText(PayActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
         }
 
-        IntentFilter filter = new IntentFilter("Action");
-
-        BroadcastReceiver receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                 token =  intent.getExtras().getString("token");
-            }
-        };
-        registerReceiver(receiver, filter);
+        LocalBroadcastManager.getInstance(this).registerReceiver(tokenReceiver, new IntentFilter("tokenReceiver"));
 
         pay = (Button)findViewById(R.id.pay);
         balance = (TextView) findViewById(R.id.balance);
@@ -143,7 +136,7 @@ pay.setOnClickListener(new View.OnClickListener() {
 
         new ResponsePaymentData().execute(amountx,cardx);
         new ResponseBalanceData().execute(emailforbalance);
-Log.d("TokenData",token);
+
 
 
         // Intent intent=new Intent(PayActivity.this,MyFirebaseInstanceIDService.class);
@@ -416,5 +409,19 @@ Log.d("TokenData",token);
         return true;
     }
 
+
+    BroadcastReceiver tokenReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String token = intent.getStringExtra("token");
+            if(token != null)
+            {
+                //send token to your server or what you want to do
+                Log.d("Token",token);
+                Toast.makeText(PayActivity.this,token,Toast.LENGTH_LONG).show();
+            }
+
+        }
+    };
 
  }

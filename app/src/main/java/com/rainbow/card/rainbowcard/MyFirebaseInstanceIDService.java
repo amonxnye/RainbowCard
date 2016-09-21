@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -59,19 +60,18 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     public void onTokenRefresh() {
         // Get updated InstanceID token.
         refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        sendRegistrationToServer(refreshedToken);
         Log.d(TAG, "Refreshed token: " + refreshedToken);
 
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
-        Intent intent = new Intent();
-       intent.setAction("Action");
+        final Intent intent = new Intent("tokenReceiver");
+        // You can also include some extra data.
+        final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
+        intent.putExtra("token",refreshedToken);
+        broadcastManager.sendBroadcast(intent);
 
-        intent.putExtra("token", refreshedToken);
-
-        sendBroadcast(intent);
-
-        sendRegistrationToServer(refreshedToken);
        // new SendDeviceToken(refreshedToken);
 
     }
@@ -109,9 +109,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
             // String email = intent.getStringExtra("email");
 
             Uri.Builder builder = new Uri.Builder()
-                    .appendQueryParameter("device",token)
-                    .appendQueryParameter("email_buyer","notset")
-                    .appendQueryParameter("card_seller","notset");
+                    .appendQueryParameter("device",token);
             //.appendQueryParameter("card_buyer", "2016");
             String query = builder.build().getEncodedQuery();
 
@@ -126,6 +124,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
 
             conn.connect();
 
+            Log.d("Data Sent","Sent");
             // Toast.makeText(PayActivity.this,"Payment Done...", Toast.LENGTH_SHORT).show();
 
 /*
