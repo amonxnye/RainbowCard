@@ -32,7 +32,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="49dp"
-        android:textSize="50sp" />
+        android:textSize="50sp"
+        android:textColor="#fcfbfb"/>
 
     <EditText
         android:layout_width="wrap_content"
